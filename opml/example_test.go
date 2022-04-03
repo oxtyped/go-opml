@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gilliek/go-opml/opml"
+	"github.com/oxtyped/go-opml/opml"
 )
 
 func ExampleNewOPMLFromFile() {
