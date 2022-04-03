@@ -12,7 +12,7 @@ This library is forked from https://github.com/gilliek/go-opml to add the follow
 
 ## Installation
 
-```go get github.com/gilliek/go-opml/opml```
+```go get github.com/oxtyped/go-opml/opml```
 
 ## Usage
 
@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gilliek/go-opml/opml"
+	"github.com/oxtyped/go-opml/opml"
 )
 
 func main() {
@@ -51,7 +51,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gilliek/go-opml/opml"
+	"github.com/oxtyped/go-opml/opml"
 )
 
 func main() {
@@ -76,7 +76,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gilliek/go-opml/opml"
+	"github.com/oxtyped/go-opml/opml"
 )
 
 func main(){
