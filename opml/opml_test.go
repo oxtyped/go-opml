@@ -7,6 +7,7 @@ package opml
 import (
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -160,5 +161,26 @@ func testDoc(t *testing.T, doc *OPML) {
 		t.Errorf("Wrong outline HTML URL: expected 'http://www.gilliek.ch', found '%s'",
 			outlines[0].HTMLURL)
 	}
+
+}
+
+func TestAddRSSFromUrl(t *testing.T) {
+
+	opml := NewOPMLFromBlank("hello")
+	err := opml.AddRSSFromURL("https://changelog.com/master/feed")
+	if err != nil {
+		t.Errorf("error adding RSS from url: %s", err)
+	}
+
+	if len(opml.Outlines()) != 1 {
+		t.Errorf("expecting for OPML outline to have 1 entry but instead got %#v", opml.Outlines())
+	}
+
+	output, err := opml.XML()
+	if err != nil {
+		t.Errorf("error extracting XML from generated OPML: %s", err)
+	}
+
+	log.Println(output)
 
 }

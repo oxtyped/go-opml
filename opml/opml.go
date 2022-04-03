@@ -17,6 +17,8 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/mmcdole/gofeed"
 )
 
 // OPML is the root node of an OPML document. It only has a single required
@@ -105,6 +107,15 @@ func NewOPMLFromFile(filePath string) (*OPML, error) {
 	return NewOPML(b)
 }
 
+// NewOPMLFromBlank creates a placeholder OPML file
+func NewOPMLFromBlank(title string) *OPML {
+	return &OPML{
+		Head: Head{
+			Title: title,
+		},
+	}
+}
+
 // Outlines returns a slice of the outlines.
 func (doc OPML) Outlines() []Outline {
 	return doc.Body.Outlines
@@ -114,4 +125,19 @@ func (doc OPML) Outlines() []Outline {
 func (doc OPML) XML() (string, error) {
 	b, err := xml.MarshalIndent(doc, "", "\t")
 	return xml.Header + string(b), err
+}
+
+func (doc *OPML) AddRSSFromURL(rssUrl string) error {
+
+	fp := gofeed.NewParser()
+	feed, _ := fp.ParseURL(rssUrl)
+
+	outline := Outline{}
+	outline.Type = "rss"
+	outline.Text = feed.Title
+	outline.XMLURL = feed.FeedLink
+
+	doc.Body.Outlines = append(doc.Body.Outlines, outline)
+	return nil
+
 }
