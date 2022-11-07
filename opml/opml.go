@@ -14,9 +14,11 @@ It is able to parse both, OPML 1.0 and OPML 2.0, files.
 package opml
 
 import (
+	"context"
 	"encoding/xml"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/mmcdole/gofeed"
 )
@@ -127,10 +129,17 @@ func (doc OPML) XML() (string, error) {
 	return xml.Header + string(b), err
 }
 
-func (doc *OPML) AddRSSFromURL(rssUrl string) error {
+// AddRSSFromURL takes in a rss feed url and a time.Duration as a
+// ContextDeadline timeout value and parses the feed title and link for
+// returning
+func (doc *OPML) AddRSSFromURL(rssUrl string, deadlineTime time.Duration) error {
 
+	ctx, _ := context.WithTimeout(context.Background(), deadlineTime)
 	fp := gofeed.NewParser()
-	feed, _ := fp.ParseURL(rssUrl)
+	feed, err := fp.ParseURLWithContext(rssUrl, ctx)
+	if err != nil {
+		return err
+	}
 
 	outline := Outline{}
 	outline.Type = "rss"
